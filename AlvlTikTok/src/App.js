@@ -1,63 +1,27 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-
+import db from './Firebase/firebase';
+import { doc, onSnapshot, collection, query, getDocs} from "firebase/firestore";
 import { Paper, IconButton } from "@mui/material";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
-import "firebase/firestore";
+// import Store from "./Store";
+// import Read from "./Read";
+// import Add from "./Add";
 
-import { initializeApp } from "firebase/app";
 
-// TODO: Replace the following with your app's Firebase project configuration
+// function MyComponent() {
+//   const [count, setCount] = useState(0);
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDrVLph7V_PCIzIMoAUwJeH8wZ3LXamdoQ",
-  authDomain: "hack-and-roll-d76d6.firebaseapp.com",
-  projectId: "hack-and-roll-d76d6",
-  storageBucket: "hack-and-roll-d76d6.appspot.com",
-  messagingSenderId: "438380290770",
-  appId: "1:438380290770:web:d60fe6a1d091e3969cc30b",
-  measurementId: "G-BKSWQ58FRJ",
-};
-
-function UploadImages() {
-  const [images, setImages] = useState([]);
-  const [imageURLs, setImageURLs] = useState([]);
-
-  useEffect(() => {
-    if (images.length < 1) return;
-    const newImageURLs = [];
-    images.forEach((image) => newImageURLs.push(URL.creatObjectIRL(image)));
-    setImageURLs(newImageURLs);
-  }, [images]);
-
-  function onImageChange(e) {
-    setImages([...e.target.files]);
-  }
-  return (
-    <>
-      <input type="file" multiple accept="image/*" onChange={onImageChange} />
-      {imageURLs.map((imageSrc) => (
-        <img src={imageSrc} />
-      ))}
-    </>
-  );
-}
-
-const app = initializeApp(firebaseConfig);
-
-function MyComponent() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <button onClick={() => setCount(count + 1)}>+</button>
-      <button onClick={() => setCount(count - 1)}>-</button>
-      count: {count}
-    </>
-  );
-}
+//   return (
+//     <>
+//       <button onClick={() => setCount(count + 1)}>+</button>
+//       <button onClick={() => setCount(count - 1)}>-</button>
+//       count: {count}
+//     </>
+//   );
+// }
 
 function ImageFrame(props) {
   const { imgSrc } = props;
@@ -94,15 +58,50 @@ function ShowAnsButton(props) {
   );
 }
 
+
 function App() {
+  const [question, setQuestion] = useState([])
+  // const fetchQuestion = async () => {
+  //   const response = db.collection("test");
+  //   const data = await response.get();
+  //   data.docs.forEach(item => {
+  //     setQuestion([...question, item.data()])
+  //   })
+  // }
+  // useEffect(() => {
+  //   fetchQuestion();
+  // }, [])
+    useEffect(() => {
+      const q = query(collection(db, "test"));
+      getDocs(q)
+      .then((docs) => {
+        docs.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+      })
+    }, [])
   return (
     <div className="App">
       <header className="App-header">
         <ImageFrame imgSrc="https://www.examsolutions.net/wp-content/uploads/2019/06/edx-al-maths-p1-june-2018-q6.jpg" />
         <TickOrCrossButtons />
         <ShowAnsButton />
+        {/* <Add /> */}
+        {
+          question && question.map(question => {
+            return (
+              <div className="blog-container">
+                <h4>{question.question}</h4>
+                <p>{question.answer}</p>
+              </div>
+
+            )
+          })
+        }
       </header>
     </div>
+
   );
 }
 
