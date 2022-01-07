@@ -2,6 +2,18 @@ import logo from "./logo.svg";
 import "./App.css";
 import React, { useState } from "react";
 
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+import { initializeApp } from "firebase/app";
+
+// TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = {
+  //...
+};
+
+const app = initializeApp(firebaseConfig);
+
 function MyComponent() {
   const [count, setCount] = useState(0);
 
