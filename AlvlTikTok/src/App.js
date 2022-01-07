@@ -1,8 +1,10 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
 
-// import firebase from "firebase/app";
+import { Paper, IconButton } from "@mui/material";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+
 import "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
@@ -57,23 +59,48 @@ function MyComponent() {
   );
 }
 
+function ImageFrame(props) {
+  const { imgSrc } = props;
+
+  return (
+    // TODO: add size constraints
+    <Paper variant="outlined">
+      <img src={imgSrc} alt="this is a picture of course :)" />
+    </Paper>
+  );
+}
+
+function TickOrCrossButtons(props) {
+  return (
+    // TODO: styling
+    // TODO: link up callback function passed in via props
+
+    <div>
+      <IconButton>
+        <CheckBoxOutlinedIcon />
+      </IconButton>
+      <button>
+        <CloseIcon />
+      </button>
+    </div>
+  );
+}
+
+function ShowAnsButton(props) {
+  return (
+    <div>
+      <button>Show me the answer plzzzzzz</button>
+    </div>
+  );
+}
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <MyComponent />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ImageFrame imgSrc="https://www.examsolutions.net/wp-content/uploads/2019/06/edx-al-maths-p1-june-2018-q6.jpg" />
+        <TickOrCrossButtons />
+        <ShowAnsButton />
       </header>
     </div>
   );
